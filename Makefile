@@ -1,6 +1,6 @@
-.PHONY: all, $(NAME), clean, fclean, re
+.PHONY: all, $(NAME), test, clean, fclean, re
 
-NAME= mlx
+NAME= fdf
 
 CC= cc
 
@@ -30,6 +30,9 @@ $(NAME): $(OBJ)
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
 	$(CC) $(INC) $(INC_MLX) $(INC_LFT) -o $@ -c $< 
+
+test: $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) -L$(LIBFT_PATH) -lft -L$(MLX_PATH) -lmlx $(GRAPHICS_FLAGS)
 
 clean:
 	make -C $(LIBFT_PATH) clean

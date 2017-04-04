@@ -42,9 +42,9 @@ int main()
 		while (x < 350)
 		{
 			mlx_pixel_put(mlx, win, x, y, color);
-			if (color < 0x00FF0000)
+			if (color < 0x0000FF00)
 			{
-				color += 0x00010000;
+				color += 0x00000100;
 				color -= 0x00000001;
 			}
 			++x;
