@@ -69,7 +69,7 @@ static int		search(int fd, t_fd_list **begin_list, char **str)
 	char		buff[BUFF_SIZE + 1];
 
 	*str = check_list(fd, begin_list);
-	while (!(ft_strchr(*str, X)) && (b = read(fd, buff, BUFF_SIZE)) > 0)
+	while (!(ft_strchr(*str, LINE)) && (b = read(fd, buff, BUFF_SIZE)) > 0)
 	{
 		buff[b] = '\0';
 		*str = ft_strmove(ft_strjoin(*str, buff), str);
@@ -90,10 +90,10 @@ int				get_next_line(int const fd, char **line)
 	if (!line || fd < 0 || fd > MAX_FD || BUFF_SIZE > MAX_BUF ||
 			(i = search(fd, &begin_list, &str)) == -1)
 		return (-1);
-	if (ft_strchr(str, X))
+	if (ft_strchr(str, LINE))
 	{
-		*line = ft_strsub(str, 0, ft_strlchr(str, X));
-		str = ft_strmove(ft_strdup(str + ft_strlchr(str, X) + 1), &str);
+		*line = ft_strsub(str, 0, ft_strlchr(str, LINE));
+		str = ft_strmove(ft_strdup(str + ft_strlchr(str, LINE) + 1), &str);
 		fd_lstadd(fd, str, &begin_list);
 	}
 	else

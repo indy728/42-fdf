@@ -2,8 +2,9 @@
 
 NAME= mlx
 
-CC= gcc
-CC_FLAGS+= -Wall -Werror -Wextra
+CC= cc
+
+GRAPHICS_FLAGS+= -framework OpenGL -framework AppKit
 
 SRC_PATH= src/
 INC_PATH= includes/
@@ -13,6 +14,8 @@ MLX_PATH= includes/minilibx/
 
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 INC = $(addprefix -I,$(INC_PATH))
+INC_MLX = $(addprefix -I, $(MLX_PATH))
+INC_LFT = $(addprefix -I, $(addprefix $(LIBFT_PATH), $(INC_PATH)))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 SRC_NAME = main.c
@@ -20,19 +23,21 @@ SRC_NAME = main.c
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	make -C $(LIBFT_PATH) $(MLX_PATH)
-	$(CC) -o $(NAME) $(OBJ) -L$(LIBFT_PATH) -lft
+	make -C $(LIBFT_PATH)
+	make -C $(MLX_PATH)
+	$(CC) -o $(NAME) $(OBJ) -L$(LIBFT_PATH) -lft -L$(MLX_PATH) -lmlx $(GRAPHICS_FLAGS)
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
-	mkdir -p $(OBJ_PATH)
-	$(CC) $(CC_FLAGS) $(INC) -o $@ -c $<
+	@mkdir -p $(OBJ_PATH)
+	$(CC) $(INC) $(INC_MLX) $(INC_LFT) -o $@ -c $< 
 
 clean:
-	make -C $(LIBFT_PATH) $(MLX_PATH) clean
+	make -C $(LIBFT_PATH) clean
+	make -C $(MLX_PATH) clean
 	rm -rf $(OBJ_PATH)
 
 fclean: clean
-	make -C $(LIBFT_PATH) $(MLX_PATH) fclean
+	make -C $(LIBFT_PATH) fclean
 	rm -f $(NAME)
 	
 re: fclean all

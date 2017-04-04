@@ -17,6 +17,6 @@ typedef enum	e_keys
 	RBRACK, O, U, LBRACK, I, P, RETURN, L, J, APOS, K, SEMI, BACKSLASH, COMMA,
 	SLASH, N, M, POINT, TAB, SPACE, TILDE, DEL, ESC = 53, LCNTRL = 256,
 	LSHIFT, RSHIFT, LCMD, RCMD, LOPT, ROPT, RCNTRL = 269
-}
+}				t_keys;
 
 #endif

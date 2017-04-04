@@ -5,17 +5,17 @@ int	my_key_funct(int keycode, t_param *param)
 	void	*tmp;
 	if (keycode == C)
 	{
-		printf("clearing window\n");
+		ft_putstr("clearing window\n");
 		mlx_clear_window(param->mlx, param->win);
 	}
 	if (keycode == D)
 	{
-		printf("destroying window\n");
+		ft_putstr("destroying window\n");
 		mlx_destroy_window(param->mlx, param->win);
 	}
 	if (keycode == ESC)
 	{
-		printf("GET ME THE FUCK OUTTA HERE!\n");
+		ft_putstr("GET ME THE FUCK OUTTA HERE!\n");
 		mlx_destroy_window(param->mlx, param->win);
 		free (param);
 		exit (0);

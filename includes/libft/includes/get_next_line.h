@@ -20,7 +20,7 @@
 # define BUFF_SIZE 3
 # define MAX_FD 1025
 # define MAX_BUF 10000000
-# define X '\n'
+# define LINE '\n'
 
 typedef struct			s_fd_list
 {
