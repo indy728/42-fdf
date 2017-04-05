@@ -12,7 +12,14 @@ typedef struct	s_param
 	void		*win;
 }				t_param;
 
-typedef enum	e_keys
+typedef struct			s_plot_list
+{
+	int					*arr;
+	int					size;
+	struct s_plot_list	*next;
+}						t_plot_list;
+
+typedem enum	e_keys
 {
 	A, S, D, F, H, G, Z, X, C, V, B = 11, Q, W, E, R, Y, T,
 	ONE, TWO, THREE, FOUR, SIX, FIVE, EQUALS, NINE, SEVEN, MINUS, EIGHT, ZERO,

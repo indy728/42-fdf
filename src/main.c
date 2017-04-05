@@ -56,8 +56,10 @@ int main(int ac, char **av)
 		char	**split;
 		int		i;
 		int		*arr;
+		t_list	*begin_list;
 
 		line = ft_strnew(1);
+		begin_list = NULL;
 		fd = open(av[1], O_RDONLY);
 		while ((gnl = get_next_line(fd, &line)) > 0)
 		{
@@ -66,6 +68,7 @@ int main(int ac, char **av)
 			while (split[i])
 				++i;
 			arr = make_array(split, i);
+			ft_lstadd(&begin_list, ft_lstnew(arr, sizeof(int) * i));
 			while (i >= 0)
 				ft_putnbr(arr[--i]);
 			ft_putendl("");
