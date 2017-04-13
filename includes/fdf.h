@@ -3,8 +3,9 @@
 
 # include "libft.h"
 # include "mlx.h"
+# include <math.h>
 
-#define GRID_SIZE 10
+#define GRID 10
 
 typedef struct	s_param
 {
