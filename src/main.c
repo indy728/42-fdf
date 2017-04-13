@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
+/*   Updated: 2017/04/12 01:28:49 by kmurray          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
+#include <stdio.h>
 
 int	my_key_funct(int keycode, t_param *param)
 {
@@ -38,12 +51,89 @@ int	*make_array(char **split, int size)
 	return (arr);
 }
 
+void	put_sqr(void *mlx, void *win, int x, int y, int color)
+{
+	int i = 0;
+	int j;
+	int size = 5;
+
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+			mlx_pixel_put(mlx, win, x + j++, y + i, color);
+		++i;
+	}
+}
+
+void	print_list(t_list *begin_list)
+{
+	t_list	*scout;
+	int		*arr;
+	int 	count;
+
+	scout = begin_list;
+	while (scout->next)
+	{
+		arr = (int *)scout->content;
+		count = 0;
+		while (count < scout->content_size / sizeof(int))
+		{
+			printf("% 3d", arr[count++]);
+	//		ft_putnbr(arr[count++]);
+		}
+		printf("\n");
+		scout = scout->next;
+	}
+	count = 0;
+	while (count < scout->content_size / sizeof(int))
+		printf("% 3d", arr[count++]);
+	//	ft_putnbr(arr[count++]);
+}
+
+void	put_list(t_list *begin_list, void *mlx, void *win, int color)
+{
+	t_list	*scout;
+	int		*arr;
+	int 	count;
+	int		x;
+	int		y;
+
+	scout = begin_list;
+	y = 50;
+	while (scout->next)
+	{
+		arr = (int *)scout->content;
+		x = 50;
+		count = 0;
+		while (count < scout->content_size / sizeof(int))
+		{
+			if (arr[count++] == 0)
+				put_sqr(mlx, win, x, y, 0x00FFFFFF);
+			else
+				put_sqr(mlx, win, x, y, color);
+			x += 50;
+		}
+		printf("\n");
+		y += 50;
+		scout = scout->next;
+	}
+	count = 0;
+	x = 50;
+	while (count < scout->content_size / sizeof(int))
+	{
+		if (arr[count++] == 0)
+			put_sqr(mlx, win, x, y, 0x00FFFFFF);
+		else
+			put_sqr(mlx, win, x, y, color);
+		x += 50;
+	}
+}
+
 int main(int ac, char **av)
 {
 	void	*mlx;
 	void	*win;
-	int		x;
-	int		y;
 	int		pulse;
 	t_param	*params;
 	int color = 0x000000FF;
@@ -56,7 +146,7 @@ int main(int ac, char **av)
 		char	**split;
 		int		i;
 		int		*arr;
-		t_list	*begin_list;
+		t_list *begin_list;
 
 		line = ft_strnew(1);
 		begin_list = NULL;
@@ -68,39 +158,21 @@ int main(int ac, char **av)
 			while (split[i])
 				++i;
 			arr = make_array(split, i);
-			ft_lstadd(&begin_list, ft_lstnew(arr, sizeof(int) * i));
-			while (i >= 0)
-				ft_putnbr(arr[--i]);
-			ft_putendl("");
+			ft_lstadd_back(&begin_list, ft_lstnew(arr, sizeof(int) * i));
 			free(split);
 			free(arr);
 		}
+		print_list(begin_list);
 		close(fd);
 		ft_freezero(line, ft_strlen(line));
+		mlx = mlx_init();
+		win = mlx_new_window(mlx, 1500, 1500, "mlx 42");
+		put_list(begin_list, mlx, win, color);
+		params = (t_param *)malloc(sizeof(t_param));
+		params->mlx = mlx;
+		params->win = win;
+		while (mlx_key_hook(win, my_key_funct, params))
+		mlx_loop(mlx);
 	}
 	return (0);
-/*	mlx = mlx_init();
-	win = mlx_new_window(mlx, 400, 400, "mlx 42");
-	y = 50;
-	while (y < 350)
-	{
-		x = 50;
-		while (x < 350)
-		{
-			mlx_pixel_put(mlx, win, x, y, color);
-			if (color < 0x0000FF00)
-			{
-				color += 0x00000100;
-				color -= 0x00000001;
-			}
-			++x;
-		}
-		color = 0x000000FF;
-		++y;
-	}
-	params = (t_param *)malloc(sizeof(t_param));
-	params->mlx = mlx;
-	params->win = win;
-	while (mlx_key_hook(win, my_key_funct, params))
-	mlx_loop(mlx);*/
 }
