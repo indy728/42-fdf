@@ -18,7 +18,7 @@ INC_MLX = $(addprefix -I, $(MLX_PATH))
 INC_LFT = $(addprefix -I, $(addprefix $(LIBFT_PATH), $(INC_PATH)))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC_NAME = main.c
+SRC_NAME = main.c wf_draw_line.c
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/13 00:54:02 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/14 02:58:40 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 		{
 			x = 300 + i * x_inc - n * x_inc;
 			y = 50 + i * y_inc + n * y_inc;
-			put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 5 + 0x010000 * 5));
+			put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 15 + 0x010000 * 15));
 			++i;
 		}
 		scout = scout->next;
@@ -224,8 +224,9 @@ int main(int ac, char **av)
 		ft_freezero(line, ft_strlen(line));
 		mlx = mlx_init();
 		win = mlx_new_window(mlx, 1500, 1500, "mlx 42");
-		print_iso2d(begin_list, mlx, win);
+		//print_iso2d(begin_list, mlx, win);
 		//put_list(begin_list, mlx, win, color);
+		wf_draw_line(mlx, win, 30, 30, 100, 100);
 		params = (t_param *)malloc(sizeof(t_param));
 		params->mlx = mlx;
 		params->win = win;

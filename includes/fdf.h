@@ -29,4 +29,6 @@ typedef enum	e_keys
 	LSHIFT, RSHIFT, LCMD, RCMD, LOPT, ROPT, RCNTRL = 269
 }				t_keys;
 
+void	wf_draw_line(void* mlx, void *win, int x1, int y1, int x2, int y2);
+
 #endif
