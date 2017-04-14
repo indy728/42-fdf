@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/14 02:58:40 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/14 03:50:38 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,16 @@ void	print_list(t_list *begin_list)
 
 void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 {
-	int x = 50;
-	int y = 50;
+	int x;
+	int y;
 	int i = 0;
 	int *arr;
+	int *arr2;
 	int	x_inc = 2 * GRID;
 	int	y_inc = GRID;
 	int n = 0;
 	t_list	*scout;
+	t_list	*next;
 	unsigned int	r = 0xFF0000;
 	unsigned int	g = 0x00FF00;
 	unsigned int	b = 0x0000FF;
@@ -111,14 +113,18 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 	{
 		arr = scout->content;
 		i = 0;
+		next = scout->next;
+		arr2 = next->content;
 		while (i < scout->content_size / sizeof(int))
 		{
 			x = 300 + i * x_inc - n * x_inc;
 			y = 50 + i * y_inc + n * y_inc;
+			//wf_draw_line(mlx, win, x, y - arr[i], x - x_inc, y + y_inc);
 			put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 15 + 0x010000 * 15));
-			++i;
+			if (++i < scout->content_size / sizeof(int))	
+				wf_draw_line(mlx, win, x, y - arr[i], x + x_inc, y - arr[i] + y_inc);
 		}
-		scout = scout->next;
+		scout = next;
 		++n;
 	}
 	arr = scout->content;
@@ -127,8 +133,9 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 	{
 		x = 300 + i * x_inc - n * x_inc;
 		y = 50 + i * y_inc + n * y_inc;
-		put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 10 + 0x010000 * 10));
-		++i;
+		//put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 10 + 0x010000 * 10));
+		if (++i < scout->content_size / sizeof(int))	
+			wf_draw_line(mlx, win, x, y - arr[i], x + x_inc, y - arr[i] + y_inc);
 	}
 }
 
@@ -224,9 +231,8 @@ int main(int ac, char **av)
 		ft_freezero(line, ft_strlen(line));
 		mlx = mlx_init();
 		win = mlx_new_window(mlx, 1500, 1500, "mlx 42");
-		//print_iso2d(begin_list, mlx, win);
+		print_iso2d(begin_list, mlx, win);
 		//put_list(begin_list, mlx, win, color);
-		wf_draw_line(mlx, win, 30, 30, 100, 100);
 		params = (t_param *)malloc(sizeof(t_param));
 		params->mlx = mlx;
 		params->win = win;
