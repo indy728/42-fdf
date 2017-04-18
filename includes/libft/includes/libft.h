@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:26:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/03/21 18:47:33 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/18 00:30:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <unistd.h>
 # include <string.h>
 # include "get_next_line.h"
+# include "printf.h"
 
 typedef struct		s_list
 {

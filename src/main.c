@@ -6,12 +6,11 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/14 03:50:38 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/18 00:34:53 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <stdio.h>
 
 int	my_key_funct(int keycode, t_param *param)
 {
@@ -79,15 +78,15 @@ void	print_list(t_list *begin_list)
 		count = 0;
 		while (count < scout->content_size / sizeof(int))
 		{
-			printf("% 3d", arr[count++]);
+			ft_printf("% 3d", arr[count++]);
 	//		ft_putnbr(arr[count++]);
 		}
-		printf("\n");
+		ft_printf("\n");
 		scout = scout->next;
 	}
 	count = 0;
 	while (count < scout->content_size / sizeof(int))
-		printf("% 3d", arr[count++]);
+		ft_printf("% 3d", arr[count++]);
 	//	ft_putnbr(arr[count++]);
 }
 
@@ -172,7 +171,7 @@ void	put_list(t_list *begin_list, void *mlx, void *win, int color)
 			}
 			x += 50;
 		}
-		printf("\n");
+		ft_printf("\n");
 		y += 50;
 		scout = scout->next;
 	}

@@ -22,9 +22,9 @@ typedef struct			s_plot_list
 
 typedef enum	e_keys
 {
-	A, S, D, F, H, G, Z, X, C, V, B = 11, Q, W, E, R, Y, T,
+	A, S, D, F, H1, G, ZED, X, C, V, B = 11, Q, W, E, R, Y, T,
 	ONE, TWO, THREE, FOUR, SIX, FIVE, EQUALS, NINE, SEVEN, MINUS, EIGHT, ZERO,
-	RBRACK, O, U, LBRACK, I, P, RETURN, L, J, APOS, K, SEMI, BACKSLASH, COMMA,
+	RBRACK, O, U, LBRACK, I, P, RETURN, ELL, JAY, APOS, K, SEMI, BACKSLASH, COMMA,
 	SLASH, N, M, POINT, TAB, SPACE, TILDE, DEL, ESC = 53, LCNTRL = 256,
 	LSHIFT, RSHIFT, LCMD, RCMD, LOPT, ROPT, RCNTRL = 269
 }				t_keys;

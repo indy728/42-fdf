@@ -3,7 +3,8 @@ NAME= libft.a
 CC= gcc
 CFLAGS+= -Wall -Werror -Wextra
 
-SRCS_PATH= ./src/
+SRCS_PATH= ./libft_src/
+PF_PATH= ./pf_src/
 
 SRC_NAME+= ft_itoa.c ft_memdup.c ft_strcmp.c ft_strncpy.c ft_lltoa_base.c\
 		   ft_memmove.c ft_strcpy.c ft_strnequ.c ft_atoi.c ft_lstadd.c ft_memset.c\
@@ -25,11 +26,19 @@ SRC_NAME+= ft_itoa.c ft_memdup.c ft_strcmp.c ft_strncpy.c ft_lltoa_base.c\
 		   ft_toupperstr.c ft_lstadd_back.c\
 		   get_next_line.c
 
+PF_SRC_NAME= ft_printf.c char_at_x.c parse_flags.c\
+				parse_fw.c parse_precision.c parse_specifier.c print_mods.c\
+				parse_length.c validate_mods.c validate_flags.c\
+				get_udecimal.c make_decimalstr.c make_stringstr.c make_pointerstr.c\
+				make_octalstr.c make_hexstr.c\
+				add_precision.c add_padding.c
+
 SRC = $(addprefix $(SRCS_PATH),$(SRC_NAME))
 
 OBJ_PATH = ./obj/
 
-OBJ_NAME = $(SRC_NAME:.c=.o)
+OBJ_NAME = $(SRC_NAME:.c=.o)\
+	$(PF_SRC_NAME:.c=.o)
 
 OBJ = $(addprefix $(OBJ_PATH),$(OBJ_NAME))
 
@@ -38,7 +47,11 @@ INC = $(addprefix -I,$(INC_PATH))
 
 all: $(NAME)
 
-$(OBJ_PATH)%.o: $(SRCS_PATH)%.c
+$(OBJ_PATH)%.o: $(SRCS_PATH)%.c 
+	@mkdir -p $(OBJ_PATH)
+	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
+
+$(OBJ_PATH)%.o: $(PF_PATH)%.c 
 	@mkdir -p $(OBJ_PATH)
 	@$(CC) $(CFLAGS) $(INC) -o $@ -c $<
 
