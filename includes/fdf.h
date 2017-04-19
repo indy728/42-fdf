@@ -6,7 +6,7 @@
 # include <math.h>
 
 # define GRID 30
-# define HEIGHT 5
+# define HEIGHT 3
 # define STARTX 500
 # define STARTY 500
 
