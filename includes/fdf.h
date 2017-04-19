@@ -17,10 +17,10 @@ typedef struct	s_param
 	int			grid_size;
 	int			startx;
 	int			starty;
-	t_list		*map;
+	int			height;
 	double		alpha;
 	double		beta;
-	int			height;
+	t_list		*map;
 }				t_param;
 /*
 typedef struct			s_plot_list
