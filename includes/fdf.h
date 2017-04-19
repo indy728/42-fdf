@@ -42,7 +42,6 @@ typedef enum	e_keys
 
 int		getx(int x, int z, t_param *params);
 int		gety(int x, int y, int z, t_param *params);
-void	wf_draw_linex(t_param *param, int row, int col);
-void	wf_draw_liney(t_param *param, int row, int col);
+void	wf_draw_line(t_param *param, int row, int col, char axis);
 
 #endif

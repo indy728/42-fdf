@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/19 00:54:47 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/19 02:43:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ void	put_to_screen(t_param *params)
 		i = 0;
 		while (i + 1 < scout->content_size / sizeof(int))
 		{
-			wf_draw_linex(params, row, i);
-			wf_draw_liney(params, row, i);
+			wf_draw_line(params, row, i, 'x');
+			wf_draw_line(params, row, i, 'y');
 			++i;
 		}
-		wf_draw_liney(params, row, i);
+		wf_draw_line(params, row, i, 'y');
 		scout = scout->next;
 		++row;
 	}
 	i = 0;
 	while (i + 1 < scout->content_size / sizeof(int))
 	{
-		wf_draw_linex(params, row, i);
+		wf_draw_line(params, row, i, 'x');
 		++i;
 	}
 }
@@ -49,12 +49,54 @@ int	my_key_funct(int keycode, t_param *params)
 		ft_putstr("clearing window\n");
 		mlx_clear_window(params->mlx, params->win);
 	}
-/*	if (keycode == LEFT)
+	if (keycode == LEFT)
 	{
 		params->beta += .02;
 		mlx_clear_window(params->mlx, params->win);
 		put_to_screen(params);
-	}*/
+	}
+	if (keycode == RIGHT)
+	{
+		params->beta -= .02;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == UP)
+	{
+		params->alpha += .02;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == DOWN)
+	{
+		params->alpha -= .02;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == PLUS)
+	{
+		params->height += 1;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == MINUS)
+	{
+		params->height -= 1;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == RBRACK)
+	{
+		params->grid_size += 1;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
+	if (keycode == LBRACK)
+	{
+		params->grid_size = ft_max(0, params->grid_size - 1);
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}
 	if (keycode == D)
 	{
 		ft_putstr("destroying window\n");
@@ -65,6 +107,7 @@ int	my_key_funct(int keycode, t_param *params)
 	{
 		ft_putstr("GET ME THE FUCK OUTTA HERE!\n");
 		mlx_destroy_window(params->mlx, params->win);
+		ft_lstdel(&params->map, ft_freezero);
 		free (params);
 		exit (0);
 	}
@@ -140,7 +183,7 @@ void	print_iso2d(t_param *params)
 	int z;
 	void *mlx = params->mlx;
 	void *win = params->win;
-	double alpha = .1;
+	double alpha = 2;
 	double beta = .785;
 	t_list	*scout;
 	t_list	*next;
@@ -294,12 +337,11 @@ int main(int ac, char **av)
 		params->height = HEIGHT;
 		params->startx = STARTX;
 		params->starty = STARTY;
-		params->alpha = 1;
-		params->beta = .5;
+		params->alpha = 0;
+		params->beta = 0;
 		params->map = begin_list;
 		//print_iso2d(params);
 		put_to_screen(params);
-		ft_lstdel(&begin_list, ft_freezero);
 		while(mlx_key_hook(win, my_key_funct, params))
 			mlx_loop(mlx);
 	}
