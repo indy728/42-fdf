@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:26:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/18 00:30:37 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/18 17:12:14 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int					ft_isprime(int n);
 int					ft_power_of(int base, int power);
 int					ft_max(int num1, int num2);
 int					ft_min(int num1, int num2);
+int					ft_abs(int x);
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);

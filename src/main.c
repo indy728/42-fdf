@@ -6,30 +6,66 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/18 00:34:53 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/19 00:54:47 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	my_key_funct(int keycode, t_param *param)
+void	put_to_screen(t_param *params)
+{
+	int i;
+	int row = 0;
+	t_list	*scout;
+
+	scout = params->map;
+	while (scout->next)
+	{
+		i = 0;
+		while (i + 1 < scout->content_size / sizeof(int))
+		{
+			wf_draw_linex(params, row, i);
+			wf_draw_liney(params, row, i);
+			++i;
+		}
+		wf_draw_liney(params, row, i);
+		scout = scout->next;
+		++row;
+	}
+	i = 0;
+	while (i + 1 < scout->content_size / sizeof(int))
+	{
+		wf_draw_linex(params, row, i);
+		++i;
+	}
+}
+
+int	my_key_funct(int keycode, t_param *params)
 {
 	void	*tmp;
+	
 	if (keycode == C)
 	{
 		ft_putstr("clearing window\n");
-		mlx_clear_window(param->mlx, param->win);
+		mlx_clear_window(params->mlx, params->win);
 	}
+/*	if (keycode == LEFT)
+	{
+		params->beta += .02;
+		mlx_clear_window(params->mlx, params->win);
+		put_to_screen(params);
+	}*/
 	if (keycode == D)
 	{
 		ft_putstr("destroying window\n");
-		mlx_destroy_window(param->mlx, param->win);
+		mlx_destroy_window(params->mlx, params->win);
+
 	}
 	if (keycode == ESC)
 	{
 		ft_putstr("GET ME THE FUCK OUTTA HERE!\n");
-		mlx_destroy_window(param->mlx, param->win);
-		free (param);
+		mlx_destroy_window(params->mlx, params->win);
+		free (params);
 		exit (0);
 	}
 	return (1);
@@ -87,19 +123,25 @@ void	print_list(t_list *begin_list)
 	count = 0;
 	while (count < scout->content_size / sizeof(int))
 		ft_printf("% 3d", arr[count++]);
+	ft_putendl("");
 	//	ft_putnbr(arr[count++]);
 }
 
-void	print_iso2d(t_list *begin_list, void *mlx, void *win)
+void	print_iso2d(t_param *params)
 {
 	int x;
 	int y;
 	int i = 0;
 	int *arr;
 	int *arr2;
-	int	x_inc = 2 * GRID;
-	int	y_inc = GRID;
+	int	x_inc = params->grid_size;
+	int	y_inc = params->grid_size;
 	int n = 0;
+	int z;
+	void *mlx = params->mlx;
+	void *win = params->win;
+	double alpha = .1;
+	double beta = .785;
 	t_list	*scout;
 	t_list	*next;
 	unsigned int	r = 0xFF0000;
@@ -107,7 +149,7 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 	unsigned int	b = 0x0000FF;
 	unsigned int color = r + g + b;
 
-	scout = begin_list;
+	scout = params->map;
 	while (scout->next)
 	{
 		arr = scout->content;
@@ -116,12 +158,21 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 		arr2 = next->content;
 		while (i < scout->content_size / sizeof(int))
 		{
-			x = 300 + i * x_inc - n * x_inc;
-			y = 50 + i * y_inc + n * y_inc;
+			z = arr[i] * params->grid_size / params->height;;
+			x = cos(beta) * (500 + i * x_inc) - sin(beta) * z;
+			y = sin(alpha) * sin(beta) * (500 + i * x_inc) + cos(alpha) * (500 + n * y_inc) + cos(alpha) * cos(beta) * z;
 			//wf_draw_line(mlx, win, x, y - arr[i], x - x_inc, y + y_inc);
-			put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 15 + 0x010000 * 15));
-			if (++i < scout->content_size / sizeof(int))	
-				wf_draw_line(mlx, win, x, y - arr[i], x + x_inc, y - arr[i] + y_inc);
+			put_sqr(mlx, win, x, y, color - arr[i] * (0x0100 * 15 + 0x010000 * 15));
+/*			wf_draw_line(mlx, win, x, y, cos(beta) * (500 + i * x_inc) - sin(beta) * arr[i] * GRID / 2,
+					sin(alpha) * sin(beta) * (500 + i * x_inc) + cos(alpha) * (500 + (n + 1) * y_inc) +
+					sin(alpha) * cos(beta) * arr2[i] * GRID / 2);
+			if (++i < scout->content_size / sizeof(int))
+			{
+				wf_draw_line(mlx, win, x, y, cos(beta) * (500 + i * x_inc) - sin(beta) * arr[i] * GRID / 2,
+						sin(alpha) * sin(beta) * (500 + i * x_inc) + cos(alpha) * (500 + n * y_inc) +
+						sin(alpha) * cos(beta) * arr[i] * GRID / 2);
+			}
+*/			++i;
 		}
 		scout = next;
 		++n;
@@ -130,11 +181,16 @@ void	print_iso2d(t_list *begin_list, void *mlx, void *win)
 	i = 0;
 	while (i < scout->content_size / sizeof(int))
 	{
-		x = 300 + i * x_inc - n * x_inc;
-		y = 50 + i * y_inc + n * y_inc;
+		z = arr[i] * params->grid_size / params->height;
+		x = cos(beta) * (500 + i * x_inc) - sin(beta) * z;
+		y = sin(alpha) * sin(beta) * (500 + i * x_inc) + cos(alpha) * (500 + n * y_inc) + cos(alpha) * cos(beta) * z;
 		//put_sqr(mlx, win, x, y - arr[i], color - arr[i] * (0x0100 * 10 + 0x010000 * 10));
-		if (++i < scout->content_size / sizeof(int))	
-			wf_draw_line(mlx, win, x, y - arr[i], x + x_inc, y - arr[i] + y_inc);
+		put_sqr(mlx, win, x, y, color - arr[i] * (0x0100 * 15 + 0x010000 * 15));
+/*		if (++i < scout->content_size / sizeof(int))	
+			wf_draw_line(mlx, win, x, y, cos(beta) * (500 + i * x_inc) - sin(beta) * arr[i] * GRID / 2,
+					sin(alpha) * sin(beta) * (500 + i * x_inc) + cos(alpha) * (500 + n * y_inc) +
+					sin(alpha) * cos(beta) * arr[i] * GRID / 2);
+*/		++i;
 	}
 }
 
@@ -209,7 +265,7 @@ int main(int ac, char **av)
 		char	**split;
 		int		i;
 		int		*arr;
-		t_list *begin_list;
+		t_list	*begin_list;
 
 		line = ft_strnew(1);
 		begin_list = NULL;
@@ -229,14 +285,22 @@ int main(int ac, char **av)
 		close(fd);
 		ft_freezero(line, ft_strlen(line));
 		mlx = mlx_init();
-		win = mlx_new_window(mlx, 1500, 1500, "mlx 42");
-		print_iso2d(begin_list, mlx, win);
+		win = mlx_new_window(mlx, 1500, 1500, av[1]);
 		//put_list(begin_list, mlx, win, color);
 		params = (t_param *)malloc(sizeof(t_param));
 		params->mlx = mlx;
 		params->win = win;
+		params->grid_size = GRID;
+		params->height = HEIGHT;
+		params->startx = STARTX;
+		params->starty = STARTY;
+		params->alpha = 1;
+		params->beta = .5;
+		params->map = begin_list;
+		//print_iso2d(params);
+		put_to_screen(params);
 		ft_lstdel(&begin_list, ft_freezero);
-		while (mlx_key_hook(win, my_key_funct, params))
+		while(mlx_key_hook(win, my_key_funct, params))
 			mlx_loop(mlx);
 	}
 	return (0);
