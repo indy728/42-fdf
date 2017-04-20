@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/08 16:31:54 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/18 00:28:01 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/04/19 18:55:52 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	convert_mess(t_mess *mess, va_list ap)
 	t_mods	*mods;
 
 	if (!(mods = (t_mods *)malloc(sizeof(t_mods))))
-		exit (1);
+		exit(1);
 	ft_bzero(mods, sizeof(t_mods));
 	parse_flags(mess, mods);
 	parse_fw(mess, mods);
@@ -61,7 +61,7 @@ int			ft_printf(const char *fmt_str, ...)
 		return (0);
 	}
 	if (!(mess = (t_mess *)malloc(sizeof(t_mess))))
-		exit (1);
+		exit(1);
 	ft_bzero(mess, sizeof(t_mess));
 	mess->fmt_str = fmt_str;
 	va_start(ap, fmt_str);
