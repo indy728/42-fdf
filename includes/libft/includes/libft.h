@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:26:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/18 17:12:14 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/07/26 16:51:36 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,38 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <string.h>
+# include <errno.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <sys/ioctl.h>
+# include <signal.h>
+# include <fcntl.h>
 # include "get_next_line.h"
 # include "printf.h"
+# include "ls.h"
+
+# define BLACK "\x1b[30m"
+# define RED "\x1b[31m"
+# define GREEN "\x1b[32m"
+# define YELLOW "\x1b[33m"
+# define BLUE "\x1b[34m"
+# define MAGENTA "\x1b[35m"
+# define CYAN "\x1b[36m"
+# define WHITE "\x1b[37m"
+# define BBLACK "\x1b[40m"
+# define BRED "\x1b[41m"
+# define BGREEN "\x1b[42m"
+# define BYELLOW "\x1b[43m"
+# define BBLUE "\x1b[44m"
+# define BMAGENTA "\x1b[45m"
+# define BCYAN "\x1b[46m"
+# define BWHITE "\x1b[47m"
+# define RESET "\x1b[0m"
+# define CLEAR "\033c"
+# define BOLD "\033[1m"
+
+typedef char		t_bool;
 
 typedef struct		s_list
 {
@@ -46,9 +76,11 @@ size_t				ft_count_words(char *str, char c);
 size_t				ft_strlchr(char *str, char c);
 
 char				*ft_strdup(char const *str);
+char				*ft_strndup(char const *str, size_t size);
 char				*ft_strmove(char *dest, char **src);
 char				*ft_strcpy(char *dest, char const *src);
 char				*ft_strncpy(char *dest, char const *src, size_t n);
+
 char				*ft_strcat(char *s1, char const *s2);
 char				*ft_strncat(char *s1, char const *s2, size_t n);
 size_t				ft_strlcat(char *s1, char const *s2, size_t size);
@@ -57,6 +89,10 @@ char				*ft_strrchr(char const *str, int c);
 char				*ft_strstr(char const *big, char const *little);
 char				*ft_strnstr(char const *big, char const
 							*little, size_t len);
+int					ft_strlstr(char *big, char *little);
+int					ft_strlnstr(char *big, char *little);
+char				*ft_strsubstr(char *big, char *little, char *sub);
+
 int					ft_strcmp(char const *s1, char const *s2);
 int					ft_strncmp(char const *s1, char const *s2, size_t n);
 char				*ft_strnew(size_t size);
@@ -74,6 +110,13 @@ char				*ft_strjoin(char const *s1, char const *s2);
 char				*ft_strtrim(char const *str);
 char				**ft_strsplit(char const *str, char c);
 
+char				**ft_dup_r(char **arr);
+char				**ft_dupn_r(char **arr, int size);
+char				**ft_pop_r(char **arr, int n);
+int					ft_size_r(char **arr);
+void				ft_print_r(char **arr);
+void				ft_del_r(char **arr);
+
 int					ft_atoi(char const *str);
 char				*ft_itoa(int n);
 char				*ft_lltoa_base(long long n, int base);
@@ -89,13 +132,17 @@ int					ft_max(int num1, int num2);
 int					ft_min(int num1, int num2);
 int					ft_abs(int x);
 
+void				ft_tboolswitch(t_bool	*x);
+
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);
 int					ft_isalnum(int c);
 int					ft_isascii(int c);
 int					ft_isprint(int c);
 int					ft_toupper(int c);
-void				ft_toupperstr(char *str);
+char				*ft_toupperstr(char *str);
+char				*ft_tolowerstr(char *str);
+char				*ft_capitalize_each(char *str);
 int					ft_tolower(int c);
 int					ft_iswhitespace(char c);
 
@@ -111,15 +158,18 @@ void				ft_putstr_fd(char const *str, int fd);
 void				ft_putendl_fd(char const *str, int fd);
 void				ft_putnbr_fd(int n, int fd);
 int					ft_putlnbr_fd(int n, int fd, int i);
+void				ft_printfile(char *path);
+
 void				ft_exit_malloc_error(char *str, size_t size);
+void				ft_exit_read_error(char *str, char **line, int fd);
 
 t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_lstcat(t_list **alst, t_list *new);
-void				ft_lstdelone(t_list **alst, void (*del)(void *, size_t));
+void				ft_lstdelone(void *content, size_t size);
 void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
-void				ft_lstadd_back(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
+void				ft_lstsort(t_list **lst, int (*cmp)(void *, void *));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_list				**ft_lstpop(t_list **alst, t_list **begin_list);
 

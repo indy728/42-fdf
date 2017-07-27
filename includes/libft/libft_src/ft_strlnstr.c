@@ -1,25 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   gety.c                                             :+:      :+:    :+:   */
+/*   ft_strlnstr.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/18 21:54:53 by kmurray           #+#    #+#             */
-/*   Updated: 2017/04/19 01:31:36 by kmurray          ###   ########.fr       */
+/*   Created: 2016/11/29 22:40:08 by kmurray           #+#    #+#             */
+/*   Updated: 2017/07/04 21:17:17 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "libft.h"
 
-int	gety(int x, int y, int z, t_param *params)
+int	ft_strlnstr(char *big, char *little)
 {
-	int	g;
+	size_t	i;
+	size_t	j;
 
-	g = params->grid_size;
-	z *= params->height;
-	y = sin(params->alpha) * sin(params->beta) * x * g +
-		cos(params->alpha) * (params->starty + y * g) +
-		sin(params->alpha) * cos(params->beta) * z;
-	return (y);
+	i = 0;
+	if (!little || !big)
+		return (0);
+	while (big[i])
+	{
+		j = 0;
+		while (big[i] == little[j])
+		{
+			++i;
+			++j;
+			if (little[j] == '\0')
+				return (i);
+		}
+		i++;
+	}
+	if (*little == '\0')
+		return (ft_strlen(big));
+	return (-1);
 }

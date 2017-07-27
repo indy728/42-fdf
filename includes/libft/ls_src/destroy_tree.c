@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   destroy_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 14:10:39 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 03:17:49 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/23 23:20:54 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ls.h"
 
-void	ft_memdel(void **ap)
+void	destroy_tree(t_file *root)
 {
-	if (*ap)
+	if (root)
 	{
-		free(*ap);
-		*ap = NULL;
+		destroy_tree(root->left);
+		destroy_tree(root->right);
+		ft_strdel(&root->name);
+		ft_strdel(&root->mode);
+		ft_strdel(&root->owner);
+		ft_strdel(&root->group);
+		ft_strdel(&root->link);
+		free(root);
+		root = NULL;
 	}
 }

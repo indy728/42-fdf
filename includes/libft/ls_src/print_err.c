@@ -1,22 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   print_err.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 14:10:39 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 03:17:49 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/19 19:53:34 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ls.h"
 
-void	ft_memdel(void **ap)
+void		print_err(t_err *root)
 {
-	if (*ap)
+	if (root)
 	{
-		free(*ap);
-		*ap = NULL;
+		if (root->left)
+			print_err(root->left);
+		ft_printf("./ft_ls: %s: %s\n", root->path, root->er_msg);
+		if (root->right)
+			print_err(root->right);
 	}
 }

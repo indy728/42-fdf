@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   param_tree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 14:10:39 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 03:17:49 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 21:42:27 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/20 02:01:10 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ls.h"
 
-void	ft_memdel(void **ap)
+t_file		*param_tree(t_file *root, char *path, t_options *options)
 {
-	if (*ap)
+	t_file	*node;
+
+	if (!(node = ft_memalloc(sizeof(t_file))))
 	{
-		free(*ap);
-		*ap = NULL;
+		perror("memory allocation error");
+		exit(1);
 	}
+	ft_bzero(node, sizeof(t_file));
+	node->name = ft_strdup(path);
+	node->blocks = get_dirattributes(node, options);
+	insert_elem(&root, node, options);
+	return (root);
 }

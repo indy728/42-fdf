@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 14:10:39 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 03:17:49 by kmurray          ###   ########.fr       */
+/*   Created: 2017/06/28 17:35:05 by kmurray           #+#    #+#             */
+/*   Updated: 2017/06/28 17:37:25 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_memdel(void **ap)
+char	*ft_strndup(char const *str, size_t size)
 {
-	if (*ap)
-	{
-		free(*ap);
-		*ap = NULL;
-	}
+	char	*dup;
+
+	if (!(dup = ft_strnew(size + 1)))
+		return (NULL);
+	return (ft_strncpy(dup, str, size));
 }

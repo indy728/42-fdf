@@ -1,22 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memdel.c                                        :+:      :+:    :+:   */
+/*   destroy_three_trees.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 14:10:39 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 03:17:49 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/20 03:27:58 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ls.h"
 
-void	ft_memdel(void **ap)
+static void	destroy_err(t_err *err)
 {
-	if (*ap)
+	if (err)
 	{
-		free(*ap);
-		*ap = NULL;
+		destroy_err(err->left);
+		destroy_err(err->right);
+		if (err->path)
+			ft_strdel(&err->path);
+		if (err->er_msg)
+			ft_strdel(&err->er_msg);
+		free(err);
+		err = NULL;
 	}
+}
+
+void		destroy_three_trees(t_err *err, t_file *ndir, t_file *dir)
+{
+	destroy_err(err);
+	destroy_tree(ndir);
+	destroy_tree(dir);
 }
