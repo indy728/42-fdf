@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 18:43:47 by kmurray           #+#    #+#             */
-/*   Updated: 2017/07/26 20:20:16 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/09 00:36:21 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,23 @@
 # define ARRAY "input map does not exist or is not valid"
 # define KMDB(x) ft_printf("HERE %d\n", x);
 
-typedef struct	s_plot
+# define DR bres->dr
+# define DG bres->dg
+# define DB bres->db
+# define RE bres->re
+# define GE bres->ge
+# define BE bres->be
+
+typedef struct		s_plot
 {
-	int			x1;
-	int			x2;
-	int			y1;
-	int			y2;
-	int			z1;
-	int			z2;
+	int				x1;
+	int				x2;
+	int				y1;
+	int				y2;
+	int				z1;
+	int				z2;
 	struct s_plot	*next;
-}				t_plot;
+}					t_plot;
 
 typedef struct	s_max
 {
@@ -45,21 +52,64 @@ typedef struct	s_max
 	int			xmin;
 	int			ymax;
 	int			ymin;
+	int			zmax;
+	int			zmin;
 }				t_max;
+
+typedef struct	s_rgb
+{
+	int			rmax;
+	int			rmin;
+	int			gmax;
+	int			gmin;
+	int			bmax;
+	int			bmin;
+}				t_rgb;
 
 typedef struct	s_param
 {
 	void		*mlx;
 	void		*win;
+	int			startx;
+	int			starty;
 	int			grid_size;
 	int			height;
 	double		alpha;
 	double		beta;
 	double		gamma;
+	int			colormin[9];
+	int			colormax[9];
+	t_rgb		*rgb;
 	t_plot		*plot_head;
 	t_max		*max;
 	t_list		*map;
 }				t_param;
+
+typedef struct	s_bres
+{
+	int			r1;
+	int			r2;
+	int			g1;
+	int			g2;
+	int			b1;
+	int			b2;
+	int			ystep;
+	int			xstep;
+	int			rstep;
+	int			rjump;
+	int			gstep;
+	int			gjump;
+	int			bstep;
+	int			bjump;
+	int			re;
+	int			ge;
+	int			be;
+	int			dx;
+	int			dy;
+	int			dr;
+	int			dg;
+	int			db;
+}				t_bres;
 
 typedef enum	e_keys
 {
@@ -73,15 +123,20 @@ typedef enum	e_keys
 
 int				getx(int x, int y, int z, t_param *params);
 int				gety(int x, int y, int z, t_param *params);
-t_plot			*get_plots(t_param *param, int row, int col, char axis);
+t_plot			*wf_get_2d_plots(t_param *param, int row, int col, char axis);
 int				my_key_funct(int keycode, t_param *params);
 void			wf_plotcat(t_plot **head, t_plot *new);
-void			wf_delplots(t_plot **head);
 t_max			*wf_getmax(t_plot *head);
-void			bresenham(int x1, int x2, int y1, int y2, t_param *params);
+void			bresenham(t_plot *plots, t_param *params);
 void			wf_putplots(t_param *params);
-void			put_to_screen(t_param *params);
+void			wf_get_plot_map(t_param *params);
 t_param			*param_init(t_list *begin_list, char *str);
 void			memdel_and_exit(t_param *params);
+int				get_rgb_r(int color);
+int				get_rgb_g(int color);
+int				get_rgb_b(int color);
+int				get_pixel_color(t_bres *bres);
+void			get_color_scheme(t_param *params, int i);
+t_bres			*tbres_init(t_param *params, t_plot *plots);
 
 #endif

@@ -6,66 +6,43 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 03:39:06 by kmurray           #+#    #+#             */
-/*   Updated: 2017/07/26 22:21:32 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/08 23:34:16 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	plot_shiftx(t_plot *plot_head, int shift)
+void color_swap(int keycode, t_param *params)
 {
-	t_plot	*tmp;
-
-	tmp = plot_head;
-	while (tmp)
-	{
-		tmp->x1 += shift;
-		tmp->x2 += shift;
-		tmp = tmp->next;
-	}
+	if (keycode == ONE)
+		get_color_scheme(params, 0);
+	if (keycode == TWO)
+		get_color_scheme(params, 1);
+	if (keycode == THREE)
+		get_color_scheme(params, 2);
+	if (keycode == FOUR)
+		get_color_scheme(params, 3);
+	if (keycode == FIVE)
+		get_color_scheme(params, 4);
+	if (keycode == SIX)
+		get_color_scheme(params, 5);
+	if (keycode == SEVEN)
+		get_color_scheme(params, 6);
+	if (keycode == EIGHT)
+		get_color_scheme(params, 7);
+	if (keycode == NINE)
+		get_color_scheme(params, 8);
 }
 
-void	plot_shifty(t_plot *plot_head, int shift)
+void translate(int keycode, t_param *params)
 {
-	t_plot	*tmp;
+	int x;
 
-	tmp = plot_head;
-	while (tmp)
-	{
-		tmp->y1 += shift;
-		tmp->y2 += shift;
-		tmp = tmp->next;
-	}
-}
-
-void	put_to_screen(t_param *params)
-{
-	int		i;
-	int		row;
-	t_list	*scout;
-
-	row = 0;
-	scout = params->map;
-	while (scout)
-	{
-		i = -1;
-		while (++i < scout->content_size / sizeof(int))
-		{
-			if (i + 1 < scout->content_size / sizeof(int))
-				wf_plotcat(&params->plot_head, get_plots(params, row, i, 'x'));
-			if (scout->next)
-				wf_plotcat(&params->plot_head, get_plots(params, row, i, 'y'));
-		}
-		scout = scout->next;
-		++row;
-	}
-	params->max = wf_getmax(params->plot_head);
-	if (params->max->xmin < 0)
-		plot_shiftx(params->plot_head, -1 * params->max->xmin);
-	if (params->max->ymin < 0)
-		plot_shifty(params->plot_head, -1 * params->max->ymin);
-	wf_putplots(params);
-	wf_delplots(&params->plot_head);
+	x = params->grid_size;
+	if (keycode == A || keycode == D)
+		params->startx += (keycode == A) ? -1 * x : x;
+	else
+		params->starty += (keycode == W) ? -1 * x : x;
 }
 
 int	my_key_funct(int keycode, t_param *params)
@@ -77,13 +54,19 @@ int	my_key_funct(int keycode, t_param *params)
 		else
 			params->alpha += (keycode == UP ? DEG : -1 * DEG);
 		mlx_clear_window(params->mlx, params->win);
-		put_to_screen(params);
+		wf_get_plot_map(params);
 	}
 	if (keycode == RSHIFT || keycode == RCNTRL)
 	{
 		GAMMA += (keycode == RSHIFT ? DEG : -1 * DEG);
 		mlx_clear_window(params->mlx, params->win);
-		put_to_screen(params);
+		wf_get_plot_map(params);
+	}
+	if ((A <= keycode && keycode <= D) || keycode == W)
+	{
+		translate(keycode, params);
+		mlx_clear_window(params->mlx, params->win);
+		wf_get_plot_map(params);
 	}
 	if (keycode == C)
 	{
@@ -94,16 +77,30 @@ int	my_key_funct(int keycode, t_param *params)
 	{
 		params->height += (keycode == PLUS ? 1 : -1);
 		mlx_clear_window(params->mlx, params->win);
-		put_to_screen(params);
+		wf_get_plot_map(params);
 	}
 	if (keycode == RBRACK || keycode == LBRACK)
 	{
 		params->grid_size += (keycode == RBRACK ? 1 : -1);
 		mlx_clear_window(params->mlx, params->win);
-		put_to_screen(params);
+		wf_get_plot_map(params);
+	}
+	if (keycode == ZERO)
+	{
+		ALPHA = 0;
+		BETA = 0;
+		GAMMA = 0;
+		mlx_clear_window(params->mlx, params->win);
+		wf_get_plot_map(params);
+	}
+	if (ONE <= keycode && keycode <= EIGHT && keycode != PLUS && keycode != MINUS)
+	{
+		color_swap(keycode, params);
+		mlx_clear_window(params->mlx, params->win);
+		wf_get_plot_map(params);
 	}
 	if (keycode == ESC)
 		memdel_and_exit(params);
-	ft_printf("% 3d % 3d % 3d % 3d\n", params->max->xmin, params->max->xmax, params->max->ymin, params->max->ymax);
+	printf("% 3f % 3f % 3f\n", ALPHA, BETA, GAMMA);
 	return (1);
 }

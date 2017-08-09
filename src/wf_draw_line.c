@@ -6,64 +6,115 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 02:45:07 by kmurray           #+#    #+#             */
-/*   Updated: 2017/07/26 21:59:58 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/08 23:30:04 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	bresenham(int x1, int x2, int y1, int y2, t_param *params)
+void	set_drgb_and_steps(int dif, t_bres *bres)
 {
-	int	dy;
-	int	dx;
-	int e;
-	int xstep;
-	int ystep;
-	int	startx;
-	int starty;
-
-	startx = 650 - (params->max->xmax - params->max->xmin) / 2;
-	starty = 650 - (params->max->ymax - params->max->ymin) / 2;
-	dx = ft_abs(x2 - x1);
-	dy = ft_abs(y2 - y1);
-	ystep = (y1 > y2) ? -1 : 1;
-	xstep = (x1 > x2) ? -1 : 1;
-	mlx_pixel_put(params->mlx, params->win, x1 + startx, y1 + starty, 0x00FF0000);
-	if (dy > dx)
+	while (DR > dif && dif != 0)
 	{
-		e = 2 * dx - dy;
-		while (x1 != x2 || y1 != y2)
+		++bres->rjump;
+		DR -= dif;
+	}
+	while (DG > dif & dif != 0)
+	{
+		++bres->gjump;
+		DG -= dif;
+	}
+	while (DB > dif & dif != 0)
+	{
+		++bres->bjump;
+		DB -= dif;
+	}
+}
+
+void	color_step(int dif, t_bres *bres)
+{
+	if (RE < 0)
+		RE += DR;
+	else
+	{
+		RE -= dif - DR;
+		bres->r1 += bres->rstep;
+	}
+	if (GE < 0)
+		GE += DG;
+	else
+	{
+		GE -= dif - DG;
+		bres->g1 += bres->gstep;
+	}
+	if (BE < 0)
+		BE += DB;
+	else
+	{
+		BE -= dif - DB;
+		bres->b1 += bres->bstep;
+	}
+	bres->r1 += bres->rjump * bres->rstep;
+	bres->g1 += bres->gjump * bres->gstep;
+	bres->b1 += bres->bjump * bres->bstep;
+}
+
+void	wf_pixel_put(t_param *params, t_plot *plots, t_bres *bres)
+{
+	int		shiftx;
+	int		shifty;
+
+	shiftx = params->startx - (params->max->xmax - params->max->xmin) / 2;
+	shifty = params->starty - (params->max->ymax - params->max->ymin) / 2;
+	if (100 <= plots->x1 + shiftx && plots->x1 + shiftx <= 1200 &&
+			100 <= plots->y1 + shifty && plots->y1 + shifty <= 1200)
+		mlx_pixel_put(params->mlx, params->win,
+				plots->x1 + shiftx,
+				plots->y1 + shifty, get_pixel_color(bres));
+}
+
+void	bresenham(t_plot *plots, t_param *params)
+{
+	t_bres	*bres;
+	int		e;
+
+	bres = tbres_init(params, plots);
+	wf_pixel_put(params, plots, bres);
+	if (bres->dy > bres->dx)
+	{
+		e = 2 * bres->dx - bres->dy;
+		set_drgb_and_steps(bres->dy, bres);
+		while (plots->x1 != plots->x2 || plots->y1 != plots->y2)
 		{
-			xstep = (x1 == x2) ? 0 : xstep;
-			ystep = (y1 == y2) ? 0 : ystep;
-			y1 += ystep;
+			plots->y1 += (plots->y1 == plots->y2) ? 0 : bres->ystep;
 			if (e < 0)
-				e += 2 * dx;
+				e += 2 * bres->dx;
 			else
 			{
-				x1 += xstep;
-				e += 2 * (dx - dy);
+				plots->x1 += bres->xstep;
+				e -= 2 * (bres->dy - bres->dx);
 			}
-		mlx_pixel_put(params->mlx, params->win, x1 + startx, y1 + starty, 0x00FFFFFF);
+			color_step(bres->dy, bres);
+			wf_pixel_put(params, plots, bres);
 		}
 	}
 	else
 	{
-		e = 2 * dy - dx;
-		while (x1 != x2 || y1 != y2)
+		e = 2 * bres->dy - bres->dx;
+		set_drgb_and_steps(bres->dx, bres);
+		while (plots->x1 != plots->x2 || plots->y1 != plots->y2)
 		{
-			xstep = (x1 == x2) ? 0 : xstep;
-			ystep = (y1 == y2) ? 0 : ystep;
-			x1 += xstep;
+			plots->x1 += (plots->x1 == plots->x2) ? 0 : bres->xstep;
 			if (e < 0)
-				e += 2 * dy;
+				e += 2 * bres->dy;
 			else
 			{
-				y1 += ystep;
-				e += 2 * (dy - dx);
+				plots->y1 += bres->ystep;
+				e += 2 * (bres->dy - bres->dx);
 			}
-		mlx_pixel_put(params->mlx, params->win, x1 + startx, y1 + starty, 0x00FFFFFF);
+			color_step(bres->dx, bres);
+			wf_pixel_put(params, plots, bres);
 		}
-	}	
+	}
+	free(bres);
 }
-

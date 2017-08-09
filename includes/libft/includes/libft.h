@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/28 12:26:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/07/26 16:51:36 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/07/26 23:05:52 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 # include <string.h>
 # include <errno.h>
 # include <sys/stat.h>
@@ -25,7 +26,6 @@
 # include <fcntl.h>
 # include "get_next_line.h"
 # include "printf.h"
-# include "ls.h"
 
 # define BLACK "\x1b[30m"
 # define RED "\x1b[31m"
