@@ -6,21 +6,60 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/02 17:55:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/08 20:32:53 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/09 01:43:18 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-/*t_bres	*wf_bresenham_init(t_plot *plots, t_param *params)
+void		set_drgb_and_steps(int dif, t_bres *bres)
 {
-	t_bres	*new;
+	while (DR > dif && dif != 0)
+	{
+		++bres->rjump;
+		DR -= dif;
+	}
+	while (DG > dif & dif != 0)
+	{
+		++bres->gjump;
+		DG -= dif;
+	}
+	while (DB > dif & dif != 0)
+	{
+		++bres->bjump;
+		DB -= dif;
+	}
+}
 
-	new->xshift = 650 - (params->max->xmax - params->max->xmin) / 2;
-	new->yshift = 650 - (params->max->ymax - params->max->ymin) / 2;
-}*/
+void		color_step(int dif, t_bres *bres)
+{
+	if (RE < 0)
+		RE += DR;
+	else
+	{
+		RE -= dif - DR;
+		bres->r1 += bres->rstep;
+	}
+	if (GE < 0)
+		GE += DG;
+	else
+	{
+		GE -= dif - DG;
+		bres->g1 += bres->gstep;
+	}
+	if (BE < 0)
+		BE += DB;
+	else
+	{
+		BE -= dif - DB;
+		bres->b1 += bres->bstep;
+	}
+	bres->r1 += bres->rjump * bres->rstep;
+	bres->g1 += bres->gjump * bres->gstep;
+	bres->b1 += bres->bjump * bres->bstep;
+}
 
-void	bres_rgb_init(t_bres *bres, t_param *params, t_plot *plots)
+static void	bres_rgb_init(t_bres *bres, t_param *params, t_plot *plots)
 {
 	t_rgb	*rgb;
 	t_max	*max;
@@ -41,8 +80,7 @@ void	bres_rgb_init(t_bres *bres, t_param *params, t_plot *plots)
 		/ (ft_max(1, max->zmax - max->zmin));
 }
 
-
-t_bres	*tbres_init(t_param *params, t_plot *plots)
+t_bres		*tbres_init(t_param *params, t_plot *plots)
 {
 	t_bres	*bres;
 

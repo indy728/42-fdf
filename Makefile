@@ -19,8 +19,8 @@ INC_LFT = $(addprefix -I, $(addprefix $(LIBFT_PATH), $(INC_PATH)))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
 SRC_NAME = main.c wf_2d_plot.c wf_draw_line.c key_functions.c\
-		   wf_plotlist.c wf_start_and_end.c wf_rgb.c\
-		   wf_bresenham_init.c
+		   wf_getplots1.c wf_getplots2.c  wf_start_and_end.c\
+		   wf_rgb.c wf_bresenham_init.c
 
 all: $(NAME)
 

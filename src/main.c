@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/09 00:32:28 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/10 01:04:07 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int				main(int ac, char **av)
 		get_map(fd, &begin_list);
 		if (!validate_map(&begin_list))
 			invalid_map(ARRAY, 0);
-		params = param_init(begin_list, av[1]);
+		params = param_init(begin_list, ac, av);
 		wf_get_plot_map(params);
 		while (mlx_key_hook(params->win, my_key_funct, params))
 			mlx_loop(params->mlx);

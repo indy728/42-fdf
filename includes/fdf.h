@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/19 18:43:47 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/09 00:36:21 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/10 01:04:21 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,20 +123,27 @@ typedef enum	e_keys
 
 int				getx(int x, int y, int z, t_param *params);
 int				gety(int x, int y, int z, t_param *params);
-t_plot			*wf_get_2d_plots(t_param *param, int row, int col, char axis);
 int				my_key_funct(int keycode, t_param *params);
 void			wf_plotcat(t_plot **head, t_plot *new);
 t_max			*wf_getmax(t_plot *head);
 void			bresenham(t_plot *plots, t_param *params);
-void			wf_putplots(t_param *params);
-void			wf_get_plot_map(t_param *params);
-t_param			*param_init(t_list *begin_list, char *str);
-void			memdel_and_exit(t_param *params);
+
+t_param			*param_init(t_list *begin_list, int ac, char **av);
+void			memdel_and_exit(t_param *params, int i);
 int				get_rgb_r(int color);
 int				get_rgb_g(int color);
 int				get_rgb_b(int color);
 int				get_pixel_color(t_bres *bres);
 void			get_color_scheme(t_param *params, int i);
+
+void			wf_putplots(t_param *params);
+void			wf_get_plot_map(t_param *params);
+t_plot			*wf_get_2d_plots(t_param *param, int row, int col, char axis);
+void			plot_shiftx(t_plot *plot_head, int shift);
+void			plot_shifty(t_plot *plot_head, int shift);
+
 t_bres			*tbres_init(t_param *params, t_plot *plots);
+void			set_drgb_and_steps(int dif, t_bres *bres);
+void			color_step(int dif, t_bres *bres);
 
 #endif
