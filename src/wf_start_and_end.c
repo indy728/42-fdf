@@ -6,63 +6,24 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/26 19:52:47 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/10 01:16:34 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 01:01:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void		memdel_and_exit(t_param *params, int i)
+void		memdel_and_exit(t_param *params)
 {
-	if (i)
-		ft_printfile("src/usage.txt");
-	else
-	{
-		mlx_destroy_window(params->mlx, params->win);
-		ft_lstdel(&params->map, ft_freezero);
-		free(params->rgb);
-		ft_putstr("ESC: Ending program.\n");
-	}
+	mlx_destroy_window(params->mlx, params->win);
+	ft_lstdel(&params->map, ft_freezero);
+	free(params->rgb);
+	ft_putstr("ESC: Ending program.\n");
 	free(params);
 	exit(0);
 }
 
-char	check_arguments(int ac, char **av)
+static void	color_init(t_param *params)
 {
-	int	i;
-
-	i = -1;
-	if (ac < 4)
-		return (ac == 2 ? 1 : 0);
-	if (ac > 5 || ft_strcmp(av[2], "-c"))
-		return (0);
-	if (ft_strlen(av[3]) > 6 || (ac == 5 && ft_strlen(av[4]) > 6))
-		return (0);
-	while (av[3][++i])
-	{
-		if (ft_tolower(av[3][i]) < '0' ||
-				(ft_tolower(av[3][i]) > '9' && 'a' > ft_tolower(av[3][i])) ||
-				 'f' < ft_tolower(av[3][i]))
-			return (0);
-	}
-	i = -1;
-	if (ac == 5)
-	{
-		while (av[4][++i])
-		{
-			if (ft_tolower(av[4][i]) < '0' ||
-					(ft_tolower(av[4][i]) > '9' && 'a' > ft_tolower(av[4][i])) ||
-					 'f' < ft_tolower(av[4][i]))
-				return (0);
-		}
-	}
-	return (1);
-}
-
-static void	color_init(t_param *params, int ac, char **av)
-{
-	if (!check_arguments(ac, av))
-		memdel_and_exit(params, 1);
 	params->colormin[0] = 0xff;
 	params->colormin[1] = 0;
 	params->colormin[2] = 0xff00;
@@ -114,23 +75,25 @@ static void	get_grid_start_size(t_param *params)
 	params->grid_size = 1100 / (int)sqrt(x * x + y * y);
 }
 
-t_param		*param_init(t_list *begin_list, int ac, char **av)
+t_param		*param_init(t_list *begin_list, char *title)
 {
 	t_param	*params;
 
-	params = (t_param *)malloc(sizeof(t_param));
-	ft_bzero(params, sizeof(t_param));
-	color_init(params, ac, av);
+	params = (t_param *)ft_memalloc(sizeof(t_param));
+	color_init(params);
 	params->mlx = mlx_init();
-	params->win = mlx_new_window(params->mlx, 1300, 1300, av[1]);
-	params->startx = 650;
-	params->starty = 650;
+	params->win = mlx_new_window(params->mlx, WINX, WINY, title);
+	image_init(params);
+	params->startx = WINX / 2;
+	params->starty = WINY / 2;
 	params->plot_head = NULL;
 	params->max = NULL;
 	params->alpha = -.698132;
 	params->beta = 0;
 	params->gamma = 0.610865;
 	params->map = begin_list;
+	params->max = (t_max *)ft_memalloc(sizeof(t_max));
+	ft_bzero(params->max, sizeof(t_max));
 	get_grid_start_size(params);
 	params->height = 1;
 	get_color_scheme(params, 0);

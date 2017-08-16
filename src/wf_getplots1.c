@@ -6,25 +6,25 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 23:31:50 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/09 02:02:57 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 01:29:02 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void			wf_plotcat(t_plot **head, t_plot *new)
+void			wf_plotcat(t_param *params, t_plot *new)
 {
-	t_plot	*tmp;
+	t_max	*max;
 
-	tmp = *head;
-	if (!tmp)
-		*head = new;
-	else
-	{
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new;
-	}
+	new->next = params->plot_head;;
+	params->plot_head = new;
+	max = params->max;
+	max->xmax = ft_max(max->xmax, new->x1);
+	max->xmin = ft_min(max->xmin, new->x1);
+	max->ymax = ft_max(max->ymax, new->y1);
+	max->ymin = ft_min(max->ymin, new->y1);
+	max->zmax = ft_max(max->zmax, new->z1);
+	max->zmin = ft_min(max->zmin, new->z1);
 }
 
 static t_list	*get_array(t_list *head, int row)
@@ -67,27 +67,6 @@ t_plot			*plot_2d(t_param *params, int row, int col, char axis)
 	return (plot);
 }
 
-t_max			*wf_getmax(t_plot *head)
-{
-	t_max	*max;
-	t_plot	*tmp;
-
-	max = ft_memalloc(sizeof(t_max));
-	ft_bzero(max, sizeof(t_max));
-	tmp = head;
-	while (tmp)
-	{
-		max->xmax = ft_max(max->xmax, tmp->x1);
-		max->xmin = ft_min(max->xmin, tmp->x1);
-		max->ymax = ft_max(max->ymax, tmp->y1);
-		max->ymin = ft_min(max->ymin, tmp->y1);
-		max->zmax = ft_max(max->zmax, tmp->z1);
-		max->zmin = ft_min(max->zmin, tmp->z1);
-		tmp = tmp->next;
-	}
-	return (max);
-}
-
 void			wf_get_plot_map(t_param *params)
 {
 	int		i;
@@ -102,14 +81,13 @@ void			wf_get_plot_map(t_param *params)
 		while (++i < scout->content_size / sizeof(int))
 		{
 			if (i + 1 < scout->content_size / sizeof(int))
-				wf_plotcat(&params->plot_head, plot_2d(params, row, i, 'x'));
+				wf_plotcat(params, plot_2d(params, row, i, 'x'));
 			if (scout->next)
-				wf_plotcat(&params->plot_head, plot_2d(params, row, i, 'y'));
+				wf_plotcat(params, plot_2d(params, row, i, 'y'));
 		}
 		scout = scout->next;
 		++row;
 	}
-	params->max = wf_getmax(params->plot_head);
 	if (params->max->xmin < 0)
 		plot_shiftx(params->plot_head, -1 * params->max->xmin);
 	if (params->max->ymin < 0)

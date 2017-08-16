@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 23:31:50 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/09 02:05:44 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 15:59:22 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,9 @@ void	wf_putplots(t_param *params)
 		free(clear);
 	}
 	params->plot_head = NULL;
+	ft_freezero(params->max, sizeof(t_max));
+	params->max = (t_max *)ft_memalloc(sizeof(t_max));
+	image_put(params);
+	wf_print_legend(params, "text/legend1.txt", 0);
+	wf_print_legend(params, "text/legend2.txt", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 03:39:06 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/10 00:34:57 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/14 19:00:22 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,26 +39,38 @@ static void	translate(int keycode, t_param *params)
 	int x;
 
 	x = params->grid_size;
-	if (keycode == A || keycode == D)
-		params->startx += (keycode == A) ? -1 * x : x;
+	if (keycode == LEFT || keycode == RIGHT)
+		params->startx += (keycode == LEFT) ? -1 * x : x;
 	else
-		params->starty += (keycode == W) ? -1 * x : x;
+		params->starty += (keycode == UP) ? -1 * x : x;
 }
 
 int			my_key_funct(int keycode, t_param *params)
 {
-	if (keycode == LEFT || keycode == RIGHT)
-		params->beta += (keycode == LEFT ? DEG : -1 * DEG);
-	if (keycode == UP || keycode == DOWN)
-		params->alpha += (keycode == UP ? DEG : -1 * DEG);
-	if (keycode == RSHIFT || keycode == RCNTRL)
-		GAMMA += (keycode == RSHIFT ? DEG : -1 * DEG);
-	if ((A <= keycode && keycode <= D) || keycode == W)
+	if (keycode == COMMA || keycode == ELL)
+		params->beta += (keycode == ELL ? DEG : -1 * DEG);
+	if (keycode == POINT || keycode == SEMI)
+		params->alpha += (keycode == POINT ? DEG : -1 * DEG);
+	if (keycode == SLASH || keycode == APOS)
+		GAMMA += (keycode == SLASH ? DEG : -1 * DEG);
+	if (LEFT <= keycode && keycode <= UP)
 		translate(keycode, params);
 	if (keycode == PLUS || keycode == MINUS)
 		params->height += (keycode == PLUS ? 1 : -1);
 	if (keycode == RBRACK || keycode == LBRACK)
 		params->grid_size += (keycode == RBRACK ? 1 : -1);
+	if (keycode == NP_CLEAR || keycode == NP_SEVEN)
+		color_shift(keycode, &params->rgb->rmax);
+	if (keycode == NP_ONE || keycode == NP_FOUR)
+		color_shift(keycode, &params->rgb->rmin);	
+	if (keycode == NP_EQUALS || keycode == NP_EIGHT)
+		color_shift(keycode, &params->rgb->gmax);
+	if (keycode == NP_FIVE || keycode == NP_TWO)
+		color_shift(keycode, &params->rgb->gmin);	
+	if (keycode == NP_SLASH || keycode == NP_NINE)
+		color_shift(keycode, &params->rgb->bmax);
+	if (keycode == NP_SIX || keycode == NP_THREE)
+		color_shift(keycode, &params->rgb->bmin);	
 	if (keycode == ZERO)
 	{
 		ALPHA = 0;
@@ -69,13 +81,14 @@ int			my_key_funct(int keycode, t_param *params)
 			keycode != PLUS && keycode != MINUS)
 		color_swap(keycode, params);
 	if (keycode == ESC)
-		memdel_and_exit(params, 0);
-	if (keycode == C)
+		memdel_and_exit(params);
+	/*if (keycode == C)
 	{
 		ft_putstr("clearing window\n");
 		mlx_clear_window(params->mlx, params->win);
 		return (1);
-	}
+	}*/
+//	printf("%d\n", keycode);
 	mlx_clear_window(params->mlx, params->win);
 	wf_get_plot_map(params);
 //	printf("% 3f % 3f % 3f\n", ALPHA, BETA, GAMMA);

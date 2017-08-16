@@ -1,0 +1,3 @@
+
+Rotate on y-axis: "," , "l"       Rotate on x-axis: "." , ";"       Rotate on z-axis: "/" , "'"       Reset rotation: "0"
+ Zoom out / in : "[" , "]"         Height adjust:  "-" , "="        Translate image: Arrow Keys           Exit: "ESC"
