@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/11 16:53:00 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/15 16:53:48 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:15:18 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,14 @@ static int		*make_array(char **split, int size)
 	}
 	return (arr);
 }
+
+/*
+**	Here I split incoming file by newline and convert each line to an integer
+**	array to represent x/y/z coordinates. I used our original libft linked-list
+**	functions pretty much just to prove that they could be used, but they're
+**	too generic and require an extra object layer so I will use my own in the
+**	future.
+*/
 
 static void		get_map(int fd, t_list **begin_list)
 {

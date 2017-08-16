@@ -6,23 +6,28 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/14 02:45:07 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/15 01:09:12 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:14:06 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/*
+**	Puts a pixel to image pointer the same way it would be put to a window,
+**	shifted so that all plots and rotation occur around wireframe center.
+*/
+
 static void	wf_pixel_put(t_param *params, t_plot *plots, t_bres *bres)
 {
-	int		shiftx;
-	int		shifty;
-	static int i;
+	int			shiftx;
+	int			shifty;
+	static int	i;
 
 	shiftx = params->startx - (params->max->xmax - params->max->xmin) / 2;
 	shifty = params->starty - (params->max->ymax - params->max->ymin) / 2;
 	if (100 <= plots->x1 + shiftx && plots->x1 + shiftx <= 1200 &&
 			100 <= plots->y1 + shifty && plots->y1 + shifty <= 1200)
-		img_pixel_put(params->img, plots->x1 + shiftx, 
+		img_pixel_put(params->img, plots->x1 + shiftx,
 				plots->y1 + shifty, get_pixel_color(bres));
 }
 
@@ -67,6 +72,11 @@ static void	bres_dy(t_param *params, t_plot *plots, t_bres *bres)
 		wf_pixel_put(params, plots, bres);
 	}
 }
+
+/*
+**	Bresenham's line equation for integers splits depending on whether the
+**	slope of x or y is greater.
+*/
 
 void		bresenham(t_plot *plots, t_param *params)
 {

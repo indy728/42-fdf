@@ -1,2 +1,2 @@
-                                       Change color palette: Main keyboard numbers 1 - 9
+                                    Change color palette: Main keyboard numbers 1 - 9
        Use Num Pad to shift RGB values: NP 1-6 shift valley colors; NP 7-9, "clear", "=", and "/" shift peak colors

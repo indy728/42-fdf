@@ -6,17 +6,24 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/24 23:31:50 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/15 01:29:02 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:16:32 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
+/*
+**	Does not actually concatenate the list of plots. Putting each new list
+**	element at the head of the list and updating plot max and min values
+**	at the same time saves 2 traversals of the list, which speeds up rendering
+**	time by around 100x on maps with over 100,000 coordinates.
+*/
+
 void			wf_plotcat(t_param *params, t_plot *new)
 {
 	t_max	*max;
 
-	new->next = params->plot_head;;
+	new->next = params->plot_head;
 	params->plot_head = new;
 	max = params->max;
 	max->xmax = ft_max(max->xmax, new->x1);
@@ -39,7 +46,13 @@ static t_list	*get_array(t_list *head, int row)
 	return (scout);
 }
 
-t_plot			*plot_2d(t_param *params, int row, int col, char axis)
+/*
+**	"plot_2d" gets a pair of coordinates--both 2D coordinates for current
+**	array value as well as either the next value in the same array (x)
+**	or the corresponding array value in the subsequent array (y).
+*/
+
+static t_plot	*plot_2d(t_param *params, int row, int col, char axis)
 {
 	int		*arr;
 	t_plot	*plot;
@@ -66,6 +79,14 @@ t_plot			*plot_2d(t_param *params, int row, int col, char axis)
 	}
 	return (plot);
 }
+
+/*
+**	All sets of coordinates are gathered by this function and added to
+**	the finished list that is later put to image as it is traversed.
+**	Plot shift accounts for flipping the image if 2D plot points are
+**	negative; otherwise rotation would either cause mirroring or go out
+**	of frame.
+*/
 
 void			wf_get_plot_map(t_param *params)
 {

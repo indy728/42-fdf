@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/14 22:33:48 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/15 14:53:36 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 18:10:24 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	image_put(t_param *params)
 {
 	int	i;
 
-	wf_print_legend(params, "text/legend1.txt");
 	i = 98;
 	while (i++ <= 1201)
 		img_pixel_put(params->img, i, 99, 0xffffff);

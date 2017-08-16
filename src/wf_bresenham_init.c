@@ -6,11 +6,17 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/02 17:55:25 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/09 01:43:18 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 18:52:59 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+**	To fit with Bresenham's line equation for integers, my modified Bresenham
+**	equation requires tinkering so that with each pixel plotted, the colors
+**	gradient appropriately despite different size steps.
+*/
 
 void		set_drgb_and_steps(int dif, t_bres *bres)
 {
@@ -30,6 +36,12 @@ void		set_drgb_and_steps(int dif, t_bres *bres)
 		DB -= dif;
 	}
 }
+
+/*
+**	This is the body of "Bresenham for color gradient." It essentially uses the
+**	same format as BLE, but the step size is dependent on the difference in RGB
+**	values per step between starting and ending coordinates
+*/
 
 void		color_step(int dif, t_bres *bres)
 {
@@ -59,6 +71,11 @@ void		color_step(int dif, t_bres *bres)
 	bres->b1 += bres->bjump * bres->bstep;
 }
 
+/*
+**	To determine gradient steps, int values of R, G, and B must be isolated at
+**	the start and end coordinates.
+*/
+
 static void	bres_rgb_init(t_bres *bres, t_param *params, t_plot *plots)
 {
 	t_rgb	*rgb;
@@ -84,8 +101,7 @@ t_bres		*tbres_init(t_param *params, t_plot *plots)
 {
 	t_bres	*bres;
 
-	bres = ft_memalloc(sizeof(t_bres));
-	ft_bzero(bres, sizeof(t_bres));
+	bres = (t_bres *)ft_memalloc(sizeof(t_bres));
 	bres_rgb_init(bres, params, plots);
 	bres->xstep = (plots->x1 > plots->x2) ? -1 : 1;
 	bres->ystep = (plots->y1 > plots->y2) ? -1 : 1;

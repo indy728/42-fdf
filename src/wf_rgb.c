@@ -6,11 +6,16 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/08 01:09:26 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/14 20:06:49 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:13:25 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+**	Simple and effective functions for isolating RGB values, playing with them,
+**	and "gluing" them back together.
+*/
 
 int		get_rgb_r(int color)
 {

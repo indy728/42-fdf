@@ -1,16 +1,1 @@
-fdf: usage: ./fdf [path_to_file] [-c (optional)] [color1] [color2 (optional)]
-
-	color format: RRGGBB -or- [color_name]
-	
-	color_name options:
-		- black
-		- white
-		- red
-		- blue
-		- green
-		- gold
-		- teal
-		- pink
-		- orange
-		- purple
-		- silver
+fdf: usage: ./fdf [path_to_file]

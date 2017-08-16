@@ -6,11 +6,18 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/07/26 20:14:50 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/08 23:12:53 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:18:01 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+**	Instead of coding a matrix-multiplying function, I just did the generic
+**	matrix multiplication on paper and coded in the final algorithm to plot
+**	3D coordinates in 2D with 3 rotational axes. Z valuation is based on 10%
+**	of grid size, using a lazy way to ensure integer integrity is maintained.
+*/
 
 int	getx(int x, int y, int z, t_param *params)
 {

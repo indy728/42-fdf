@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_functions.c                                    :+:      :+:    :+:   */
+/*   wf_key_functions.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/20 03:39:06 by kmurray           #+#    #+#             */
-/*   Updated: 2017/08/14 19:00:22 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/08/15 19:17:09 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+
+/*
+** Key functions are pretty straightforward. Split by ~theme to satistfy
+** max function length of the Norme.
+*/
 
 static void	color_swap(int keycode, t_param *params)
 {
@@ -45,7 +50,7 @@ static void	translate(int keycode, t_param *params)
 		params->starty += (keycode == UP) ? -1 * x : x;
 }
 
-int			my_key_funct(int keycode, t_param *params)
+static void	key_ops(int keycode, t_param *params)
 {
 	if (keycode == COMMA || keycode == ELL)
 		params->beta += (keycode == ELL ? DEG : -1 * DEG);
@@ -62,15 +67,20 @@ int			my_key_funct(int keycode, t_param *params)
 	if (keycode == NP_CLEAR || keycode == NP_SEVEN)
 		color_shift(keycode, &params->rgb->rmax);
 	if (keycode == NP_ONE || keycode == NP_FOUR)
-		color_shift(keycode, &params->rgb->rmin);	
+		color_shift(keycode, &params->rgb->rmin);
 	if (keycode == NP_EQUALS || keycode == NP_EIGHT)
 		color_shift(keycode, &params->rgb->gmax);
 	if (keycode == NP_FIVE || keycode == NP_TWO)
-		color_shift(keycode, &params->rgb->gmin);	
+		color_shift(keycode, &params->rgb->gmin);
 	if (keycode == NP_SLASH || keycode == NP_NINE)
 		color_shift(keycode, &params->rgb->bmax);
 	if (keycode == NP_SIX || keycode == NP_THREE)
-		color_shift(keycode, &params->rgb->bmin);	
+		color_shift(keycode, &params->rgb->bmin);
+}
+
+int			my_key_funct(int keycode, t_param *params)
+{
+	key_ops(keycode, params);
 	if (keycode == ZERO)
 	{
 		ALPHA = 0;
@@ -82,15 +92,7 @@ int			my_key_funct(int keycode, t_param *params)
 		color_swap(keycode, params);
 	if (keycode == ESC)
 		memdel_and_exit(params);
-	/*if (keycode == C)
-	{
-		ft_putstr("clearing window\n");
-		mlx_clear_window(params->mlx, params->win);
-		return (1);
-	}*/
-//	printf("%d\n", keycode);
 	mlx_clear_window(params->mlx, params->win);
 	wf_get_plot_map(params);
-//	printf("% 3f % 3f % 3f\n", ALPHA, BETA, GAMMA);
 	return (1);
 }
