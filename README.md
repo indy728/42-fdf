@@ -15,10 +15,19 @@ The binary should at least compile with Mac OS X versions Yosemite and later.
 ## The Project
 
 An example of a valid text file to be interpreted would look like this:
-![map42.fdf](/fdf_screenshots/screenshot_map42.png?raw=true "map42.fdf")
 
+![map42.fdf](/fdf_screenshots/screenshot_map42.png?raw=true "map42.fdf")
 
 Where the column count from the left represents the x-coordinate, the row count from the top represents the y-coordinate, 
 and the value of each integer represents the height, or z-coordinate. The initial output for this image will be rotated slightly on 3 axes to give a better 3D effect: 
 
 ![map42](/fdf_screenshots/map_42.png?raw=true "map 42")
+
+To draw the lines, I adapted Bresenham's line-drawing algorithm for integers. My rotation algorithm uses two functions which implement rotation matrices for isometric projection, for which there are numerous resources online. All the information needed to complete this project can be found on the following wiki pages:
+<br> • https://en.wikipedia.org/wiki/Rotation_matrix
+<br> • https://en.wikipedia.org/wiki/Isometric_projection
+
+## Project Bonuses
+The meat of the project is fairly simple: a single perspective's projection to a window. However, once the rotation for a single perspective is achieved, it is a simple task to assign keys to adjust the rotation angles and reprint to screen. The goal I set for myself on this project was to be able to set any two colors to the highest- and lowest-most z-values and any point in between those two points would be assigned a color based on height proportional to the gradient between the two given colors. The algorithm I came up with takes the z-values at two points, determines their base RGB hex color based on proportion of total height, and steps each of the R, G, and B components in correlation with the steps of my adapted Bresenham algorithm. The final touch was to be able to maually adjust the peak and valley RGB values individually using the num-pad, so that any color pair can be achieved.
+
+Screenshots:
