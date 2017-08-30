@@ -41,3 +41,6 @@ Screenshots:
 ![juliabw](/fdf_screenshots/julia_closeup_bw.png?raw=true "julia bw")
 ![mandel](/fdf_screenshots/mandelbrot_full.png?raw=true "mandelbrot")
 ![mandelclose](/fdf_screenshots/mandelbrot_closeup.png?raw=true "mandel closeup")
+
+## Project Improvements
+The obvious improvements to implement for me would be to use hooks to catch keys being held down and released, mouse clicks, mouse location and mouse scroll wheel for ease and fluidity of user input. For smoothness, multithreading to separate processes and allow for the program to move at full video speed, even with files of hundreds of thousands of coordinates or more. Also, accepting multiple files as arguments to be opened concurrently in different windows, and user input to dictate window size and starting colors.
