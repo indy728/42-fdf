@@ -31,3 +31,6 @@ To draw the lines, I adapted Bresenham's line-drawing algorithm for integers. My
 The meat of the project is fairly simple: a single perspective's projection to a window. However, once the rotation for a single perspective is achieved, it is a simple task to assign keys to adjust the rotation angles and reprint to screen. The goal I set for myself on this project was to be able to set any two colors to the highest- and lowest-most z-values and any point in between those two points would be assigned a color based on height proportional to the gradient between the two given colors. The algorithm I came up with takes the z-values at two points, determines their base RGB hex color based on proportion of total height, and steps each of the R, G, and B components in correlation with the steps of my adapted Bresenham algorithm. The final touch was to be able to maually adjust the peak and valley RGB values individually using the num-pad, so that any color pair can be achieved.
 
 Screenshots:
+![map420](/fdf_screenshots/map_42_rot0.png?raw=true "map 42_rot0")
+![map421](/fdf_screenshots/map_42_rot1.png?raw=true "map 42_rot1")
+![map422](/fdf_screenshots/map_42_rot2.png?raw=true "map 42_rot2")
