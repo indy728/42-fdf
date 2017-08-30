@@ -21,4 +21,4 @@ An example of a valid text file to be interpreted would look like this:
 Where the column count from the left represents the x-coordinate, the row count from the top represents the y-coordinate, 
 and the value of each integer represents the height, or z-coordinate. The initial output for this image will be rotated slightly on 3 axes to give a better 3D effect: 
 
-![map42](/fdf_screenshots/map42.png?raw=true "map42.fdf")
+![map42](/fdf_screenshots/map_42.png?raw=true "map 42")
