@@ -34,3 +34,8 @@ Screenshots:
 ![map420](/fdf_screenshots/map_42_rot0.png?raw=true "map 42_rot0")
 ![map421](/fdf_screenshots/map_42_rot1.png?raw=true "map 42_rot1")
 ![map422](/fdf_screenshots/map_42_rot2.png?raw=true "map 42_rot2")
+![julia](/fdf_screenshots/julia_full.png?raw=true "julia_fractal")
+![julia0](/fdf_screenshots/julia_rot0.png?raw=true "julia rot0")
+![julia0z](/fdf_screenshots/julia_rot0zoom1.png?raw=true "julia rot0 zoom")
+![juliaclose](/fdf_screenshots/julia_closeup.png?raw=true "julia closeup")
+![juliabw](/fdf_screenshots/julia_closeup_bw.png?raw=true "julia bw")
