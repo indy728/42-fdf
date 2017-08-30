@@ -11,3 +11,23 @@ By stage:
   <br>• use the MLX graphics library provided to output the wireframe pixel-by-pixel to an image file and then relay the image-size buffer to the screen
   
 The binary should at least compile with Mac OS X versions Yosemite and later.
+
+## The Project
+
+An example of a valid text file to be interpreted would look like this:
+
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0 10 10  0  0 10 10  0  0  0 10 10 10 10 10  0  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10  0  0 10 10  0  0  0  0  0  0  0 10 10  0  0
+0  0 10 10 10 10 10 10  0  0  0  0 10 10 10 10  0  0  0
+0  0  0 10 10 10 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10  0  0  0  0  0  0
+0  0  0  0  0  0 10 10  0  0  0 10 10 10 10 10 10  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0
+
+Where the column count from the left represents the x-coordinate, the row count from the top represents the y-coordinate, 
+and the value of each integer represents the height, or z-coordinate. The initial output for this image will be rotated slightly on 3 axes to give a better 3D effect: 
+
