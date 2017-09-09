@@ -1,5 +1,5 @@
 # 42-fdf
-Interpreting 3D coordinates with rotation on 3 axes to 2D output
+## Interpreting 3D coordinates with rotation on 3 axes to 2D output
 
 The purpose of this project "fils de fer" or "wires" (wireframe) is an exercise in using C to visually represent a figure described in a text file.
 
